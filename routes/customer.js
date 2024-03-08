@@ -1,31 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const Customer = require('../model/CustomerModel');
+const cusController= require("../controller/CustomerController")
 
-router.get("/", (req, res) => {
-  res.send(`Customer API just Called`);
-});
+router.get("/", cusController.getAll);
 
-router.get("/:id", (req, res) => {
-  res.send(`Customer with id ${req.params.id} just called!`);
-});
+router.get("/:id", cusController.getById);
 
-router.post("/", async (req, res) => {
-  try {
-    const customer = await Customer(req.body);
-    res.status(201).send({
-      success: true,
-      data: customer,
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send(error.message);
-  }
-  res.send(req.body);
-});
+router.post("/", cusController.save);
 
-router.put("/:id", (req, res) => {
-  res.send(`Customer with id ${req.params.id} just updated!`);
-});
+router.put("/:id", cusController.update);
+
+router.delete("/:id", cusController.delete);
 
 module.exports = router;
